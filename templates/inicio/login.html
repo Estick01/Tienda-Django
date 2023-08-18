@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="../../static/ccs/style.ccs.css">
+</head>
+<body>
+
+<form class="box"  method="post">
+    {% csrf_token %}
+    <h1>login</h1>
+    <input type="text" name="username" autofocus autocapitalize="none" placeholder="Usuario" required id="id_username">
+     <input type="password" name="password" autocomplete="current-password" placeholder="Contraseña" required id="id_password">
+    <input type="submit" name="" value="login">
+
+</form>
+
+</body>
+</html>

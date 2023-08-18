@@ -1,0 +1,111 @@
+
+{% extends 'inicio/index.html' %}
+{% load static %}
+{% block titulo %}
+Cobrador
+{% endblock %}
+{% block imagen %}
+{% static 'img/Empleados.png' %}
+{% endblock imagen %}
+{% block title %}
+Cobradores
+{% endblock %}
+{% block titulo_principal %}
+{% endblock  %}
+   {% block buscador %}
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 search">
+                      <form method="get">
+                          <div id=" custom-search-input">
+                             <div class="input-group col-md-12">
+                                 <input type="text" class="form-control" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar }}">
+                                 <span class="input-group-list">
+                                 <i class="icon icon-search"></i>
+                                    <button type="submit" class="boton btn-success">Buscar</button>
+                                 </span>
+                             </div>
+                          </div>
+                      </form>
+                  </div>
+             </div>
+          </div>
+{% endblock %}
+{% block post %}
+    <h1 align="center">LISTA DE Cobradores</h1>
+<table align="center" style="width:auto; height:15px;" class="table table-condensed table-bordered table-hover">
+<thead>
+    <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Cedula</th>
+        <th scope="col">Telefono</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for persona in Empleado   %}
+        <tr>
+        <td scope="row">{{ persona.Emp_nombre }}</td>
+        <td scope="row">{{ persona.Emp_apellido }}</td>
+        <td scope="row">{{ persona.Emp_direccion }}</td>
+        <td scope="row">{{ persona.Emp_cedula }}</td>
+        <td scope="row">{{ persona.Emp_telefono }}</td>
+        <td><button onclick="abrir_modal_edicion('{% url 'tendero:editarEmpleado' persona.Emp_ID %}')"class="btn btn-dark">Editar</button></td>
+        <td><button onclick="abrir_modal_elimnar('{% url 'tendero:elimnarEmpleado' persona.Emp_ID %}')"class="btn btn-dark">Eliminar</button></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+   </table>
+
+{% block crear %}
+    <div class="modal fade" id="edicion" role="dialog">
+    </div>
+{% endblock %}
+{% block editar %}
+    <div class="modal fade" id="creacion" role="dialog">
+    </div>
+{% endblock %}
+{% block elimnar %}
+    <div class="modal fade" id="Eliminar" role="dialog">
+    </div>
+{% endblock %}
+{% endblock post %}
+{% block extrajs %}
+    <script type="text/javascript">
+      var $ = jQuery.noConflict();
+    function abrir_modal_edicion(url){
+        $('#edicion').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    function abrir_modal_creacion(url){
+        $('#creacion').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    function abrir_modal_elimnar(url){
+        $('#Eliminar').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    </script>
+{% endblock extrajs %}
+      {% block boton1 %}
+    <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'tendero:crearEmpleado' %}')">Crear Cobrador</button>
+{% endblock boton1  %}
+{% block botons %}
+ <div class="clearfix">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                {% if Empleado.has_next %}
+                     <a href="?page={{ Empleado.next_page_number }}{% if request.GET.search %}&q={{ request.GET.search }}{% endif %} " class="btn btn-primary float-right">&rarr;</a>
+                 {% endif %}
+                {% if Empleado.has_previous %}
+                    <a href="?page={{ Empleado.previous_page_number }}{% if request.GET.search %}&q={{ request.GET.search }}{% endif %}" class="btn btn-primary float-left">&larr;</a>
+                {% endif %}
+          </div>
+    </div>
+</div>
+{% endblock %}

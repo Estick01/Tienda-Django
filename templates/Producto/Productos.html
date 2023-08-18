@@ -1,0 +1,122 @@
+
+{% extends 'inicio/index.html' %}
+{% load static %}
+{% block titulo %}
+Producto
+{% endblock %}
+{% block imagen %}
+{% static 'img/Productos.jpg' %}
+{% endblock imagen %}
+{% block title %}
+Productos
+{% endblock %}
+{% block titulo_principal %}
+{% endblock  %}
+{% block buscador %}
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 search">
+                      <form method="get">
+                          <div id=" custom-search-input">
+                             <div class="input-group col-md-12">
+                                 <input type="text" class="form-control" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar }}">
+                                 <span class="input-group-list">
+                                 <i class="icon icon-search"></i>
+                                    <button type="submit" class="boton btn-success">Buscar</button>
+                                 </span>
+                             </div>
+                          </div>
+                      </form>
+                  </div>
+             </div>
+          </div>
+{% endblock %}
+{% block post %}
+
+    <h1 align="center">LISTA DE PRODUCTOS</h1>
+<table align="center" border="1" style="width:auto; height:20px;" class="table table-condensed table-bordered table-hover">
+<thead>
+  <tr align="center" class="active">
+    <tr>
+        <th>ID</th>
+        <th>categoria</th>
+        <th>nombre</th>
+        <th>embalaje</th>
+        <th>cantidad</th>
+        <th>precio inicial</th>
+        <th>precio al por mayor</th>
+        <th>precio al publico</th>
+        <th>proveedor</th>
+    </tr>
+    </thead>
+
+    {% for producto in producto  %}
+        <tr>
+        <td>{{ producto.Prod_id}}</td>
+        <td>{{ producto.Prod_categoria}}</td>
+        <td>{{ producto.Prod_nombre }}</td>
+        <td>{{ producto.Prod_embalaje }}</td>
+        <td>{{ producto.Prod_cantidad }}</td>
+        <td>{{ producto.Prod_precioin }}</td>
+        <td>{{ producto.Prod_preciomayor }}</td>
+        <td>{{ producto.Prod_preciopublico }}</td>
+        <td>{{ producto.Prod_provedor }}</td>
+        <td><button onclick="abrir_modal_edicion('{% url 'tendero:editarProducto' producto.Prod_id %}')"class="btn btn-dark">Editar</button></td>
+        <td><button onclick="abrir_modal_elimnar('{% url 'tendero:elimnarProducto' producto.Prod_id %}')"class="btn btn-dark">Eliminar</button></td>
+        </tr>
+    {% endfor %}
+   </table>
+
+
+{% block crear %}
+    <div class="modal fade" id="edicion" role="dialog">
+    </div>
+{% endblock %}
+{% block editar %}
+    <div class="modal fade" id="creacion" role="dialog">
+    </div>
+{% endblock %}
+{% block elimnar %}
+    <div class="modal fade" id="Eliminar" role="dialog">
+    </div>
+{% endblock %}
+
+{% endblock post %}
+{% block extrajs %}
+    <script type="text/javascript">
+      var $ = jQuery.noConflict();
+    function abrir_modal_edicion(url){
+        $('#edicion').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    function abrir_modal_creacion(url){
+        $('#creacion').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    function abrir_modal_elimnar(url){
+        $('#Eliminar').load(url,function (){
+            $(this).modal('show');
+        });
+    }
+    </script>
+{% endblock extrajs %}
+      {% block boton1 %}
+    <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'tendero:crearProducto' %}')">Crear producto</button>
+{% endblock boton1  %}
+{% block botons %}
+ <div class="clearfix">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                {% if producto.has_next %}
+                     <a href="?page={{ producto.next_page_number }}{% if request.GET.search %}&q={{ request.GET.search }}{% endif %} " class="btn btn-primary float-right">&rarr;</a>
+                 {% endif %}
+                {% if producto.has_previous %}
+                    <a href="?page={{ producto.previous_page_number }}{% if request.GET.search %}&q={{ request.GET.search }}{% endif %}" class="btn btn-primary float-left">&larr;</a>
+                {% endif %}
+          </div>
+    </div>
+</div>
+{% endblock %}
+

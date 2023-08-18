@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tendero1.0</title>
+</head>
+<body>
+<button><a href="{% url 'index' %}"> INICIO</a></button>
+{% block cuerpo %}
+<h1>LISTA DE CLIENTES</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Impuesto</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for factura in object_list %}
+
+
+        <tr>
+        <td>{{ factura.Det_id }}</td>
+        <td>{{ factura.Det_impuesto }}</td>
+
+        <td><a href="{% url 'tendero:editarFactura_Detalle' factura.Det_id %}"> Editar</a></td>
+        <td><a href="{% url 'tendero:elimnarFactura_Detalle' factura.Det_id %}">Eliminar</a></td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock cuerpo %}
+</body>
+</html>
